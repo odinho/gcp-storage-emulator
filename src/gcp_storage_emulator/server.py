@@ -82,6 +82,12 @@ HANDLERS = (
         r"^{}$".format(settings.BATCH_API_ENDPOINT),
         {POST: objects.batch},
     ),
+    # Problematic official stripping of GCP
+    (
+        r"^/b/(?P<bucket_name>[-.\w]+)/o/(?P<object_id>.*[^/]+)$",
+        {GET: objects.get, DELETE: objects.delete, PATCH: objects.patch},
+    ),
+
     # Internal API, not supported by the real GCS
     (r"^/$", {GET: _health_check}),  # Health check endpoint
     (r"^/wipe$", {GET: _wipe_data}),  # Wipe all data
