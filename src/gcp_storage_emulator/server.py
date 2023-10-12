@@ -331,6 +331,8 @@ class Router(object):
             if match:
                 request.set_match(match)
                 handler = handlers.get(method)
+                if not handler:
+                    continue
                 try:
                     handler(request, response, self._request_handler.storage)
                 except Exception as e:
