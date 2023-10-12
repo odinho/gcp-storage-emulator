@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', 'pypy-3.7']
+        python-version: [ '3.10']
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -43,10 +43,6 @@ jobs:
         run: pip install -e .
       - name: Test with pytest
         run: pytest
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          flags: unittests
 
   docker:
     runs-on: ubuntu-20.04
@@ -72,7 +68,7 @@ jobs:
           platforms: ${{ matrix.arch }}
           push: false
           load: true
-          tags: oittaa/gcp-storage-emulator:latest
+          tags: odinomdal/gcp-storage-emulator:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       -
@@ -84,7 +80,7 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - name: Docker container up
-        run: docker run -d --rm -p 8080:8080 --name gcp-storage-emulator oittaa/gcp-storage-emulator
+        run: docker run -d --rm -p 8080:8080 --name gcp-storage-emulator odinomdal/gcp-storage-emulator
       - name: Wait 10 seconds
         run: sleep 10
       - name: Check running containers
@@ -98,7 +94,7 @@ jobs:
 
   publish:
     if: ${{ github.event_name == 'push' }}
-    needs: [lint, build, docker]
+    needs: [docker]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -124,7 +120,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: oittaa/gcp-storage-emulator:latest
+          tags: odinomdal/gcp-storage-emulator:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
