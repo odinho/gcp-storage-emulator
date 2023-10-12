@@ -284,6 +284,7 @@ class Response(object):
     def write_file(self, content, content_type="application/octet-stream"):
         if content_type is not None:
             self["Content-type"] = content_type
+        self["Content-Encoding"] = "gzip"
 
         self._content = content
 
