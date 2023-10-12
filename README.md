@@ -1,3 +1,7 @@
+**This is a fork of https://github.com/oittaa/gcp-storage-emulator, which is _not_ meant to be
+generally usable. It has better interopability with the node js @google-cloud/storage client and its
+bugs but has terrible hacks that mean you probably won't want to use this.**
+
 # Local Emulator for Google Cloud Storage
 
 [![CI](https://github.com/oittaa/gcp-storage-emulator/actions/workflows/main.yml/badge.svg)](https://github.com/oittaa/gcp-storage-emulator/actions/workflows/main.yml)
